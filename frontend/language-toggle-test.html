@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Toggle Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #042E25;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status {
+            background: #F0FDF4;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .status strong {
+            color: #10B981;
+            font-size: 24px;
+        }
+
+        .content {
+            background: #EFF6FF;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .content.urdu {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .toggle-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .toggle-btn.english {
+            background: #3B82F6;
+        }
+
+        .toggle-btn.english:hover {
+            background: #2563EB;
+            transform: scale(1.05);
+        }
+
+        .toggle-btn.urdu {
+            background: #10B981;
+        }
+
+        .toggle-btn.urdu:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            z-index: 9999;
+        }
+
+        .floating-btn.english {
+            background: #3B82F6;
+        }
+
+        .floating-btn.urdu {
+            background: #10B981;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .icon {
+            font-size: 30px;
+        }
+
+        .label {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .debug {
+            background: #FEF3C7;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .debug p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Language Toggle Test</h1>
+        
+        <div class="status">
+            <p>Current Language:</p>
+            <p><strong id="currentLang">English</strong></p>
+        </div>
+
+        <div class="content" id="content">
+            <h2 id="contentTitle">Welcome to AgroSmart</h2>
+            <p id="contentText">
+                This is a test page to verify that the language toggle is working correctly. 
+                Click the button below or the floating button to switch languages.
+            </p>
+        </div>
+
+        <button class="toggle-btn english" id="toggleBtn" onclick="toggleLanguage()">
+            Toggle to Urdu (اردو میں تبدیل کریں)
+        </button>
+
+        <div class="debug">
+            <p><strong>Debug Info:</strong></p>
+            <p id="debugInfo">Click count: 0</p>
+            <p id="storageInfo">LocalStorage: english</p>
+        </div>
+    </div>
+
+    <button class="floating-btn english" id="floatingBtn" onclick="toggleLanguage()">
+        <span class="icon">🌐</span>
+        <span class="label" id="floatingLabel">اردو</span>
+    </button>
+
+    <script>
+        let clickCount = 0;
+        let currentLanguage = localStorage.getItem('language') || 'english';
+
+        const translations = {
+            english: {
+                title: 'Language Toggle Test',
+                currentLang: 'English',
+                contentTitle: 'Welcome to AgroSmart',
+                contentText: 'This is a test page to verify that the language toggle is working correctly. Click the button below or the floating button to switch languages.',
+                toggleBtn: 'Toggle to Urdu (اردو میں تبدیل کریں)',
+                floatingLabel: 'اردو'
+            },
+            urdu: {
+                title: 'زبان ٹوگل ٹیسٹ',
+                currentLang: 'اردو',
+                contentTitle: 'AgroSmart میں خوش آمدید',
+                contentText: 'یہ ایک ٹیسٹ صفحہ ہے جو یہ تصدیق کرتا ہے کہ زبان ٹوگل صحیح طریقے سے کام کر رہا ہے۔ زبان تبدیل کرنے کے لیے نیچے دیے گئے بٹن یا فلوٹنگ بٹن پر کلک کریں۔',
+                toggleBtn: 'Toggle to English (انگریزی میں تبدیل کریں)',
+                floatingLabel: 'EN'
+            }
+        };
+
+        function updateUI() {
+            const trans = translations[currentLanguage];
+            
+            document.getElementById('title').textContent = trans.title;
+            document.getElementById('currentLang').textContent = trans.currentLang;
+            document.getElementById('contentTitle').textContent = trans.contentTitle;
+            document.getElementById('contentText').textContent = trans.contentText;
+            document.getElementById('toggleBtn').textContent = trans.toggleBtn;
+            document.getElementById('floatingLabel').textContent = trans.floatingLabel;
+
+            // Update button classes
+            const toggleBtn = document.getElementById('toggleBtn');
+            const floatingBtn = document.getElementById('floatingBtn');
+            const content = document.getElementById('content');
+
+            toggleBtn.className = `toggle-btn ${currentLanguage}`;
+            floatingBtn.className = `floating-btn ${currentLanguage}`;
+            
+            if (currentLanguage === 'urdu') {
+                content.classList.add('urdu');
+            } else {
+                content.classList.remove('urdu');
+            }
+
+            // Update debug info
+            document.getElementById('storageInfo').textContent = `LocalStorage: ${localStorage.getItem('language')}`;
+        }
+
+        function toggleLanguage() {
+            clickCount++;
+            currentLanguage = currentLanguage === 'english' ? 'urdu' : 'english';
+            localStorage.setItem('language', currentLanguage);
+            
+            console.log('Language toggled to:', currentLanguage);
+            console.log('Click count:', clickCount);
+            
+            document.getElementById('debugInfo').textContent = `Click count: ${clickCount}`;
+            
+            updateUI();
+        }
+
+        // Initialize on load
+        updateUI();
+        console.log('Page loaded. Initial language:', currentLanguage);
+    </script>
+</body>
+</html>
