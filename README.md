@@ -246,7 +246,7 @@ docker-compose down
 
 ```
 AgriX/
-├── frontend/                 # React + Vite frontend
+├── frontend/                # React + Vite frontend
 │   ├── src/
 │   │   ├── pages/           # Main page components
 │   │   ├── components/      # Reusable components
@@ -258,8 +258,8 @@ AgriX/
 │   ├── vite.config.js
 │   ├── tailwind.config.js
 │   └── postcss.config.js
-├── backend/                 # Express.js backend
-│   ├── controllers/         # Business logic
+├── backend/                # Express.js backend
+│   ├── controllers/        # Business logic
 │   ├── routes/             # API routes
 │   ├── models/             # MongoDB schemas
 │   ├── middleware/         # Auth middleware
