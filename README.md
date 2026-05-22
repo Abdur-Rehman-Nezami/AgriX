@@ -222,6 +222,26 @@ AgroSmart is a comprehensive agricultural technology platform designed for Pakis
 
 ---
 
+## 🐳 Docker Setup (Recommended)
+
+You can easily run the entire AgroSmart platform (Frontend, Backend, and a local MongoDB instance) using Docker. This ensures a consistent environment and avoids any local installation or connection issues.
+
+1. Ensure you have Docker and Docker Compose installed on your system.
+2. Run the following command in the root directory:
+   ```bash
+   docker-compose up -d --build
+   ```
+3. Access the application:
+   - **Frontend**: http://localhost:3000
+   - **Backend API**: http://localhost:5001
+
+To stop the application, run:
+```bash
+docker-compose down
+```
+
+---
+
 ## 📁 Project Structure
 
 ```
